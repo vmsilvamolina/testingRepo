@@ -4,6 +4,7 @@ on:                                                  #Disparador / trigger
   push:
     branches:
       - dev
+      - main
   workflow_dispatch: 
 
 jobs:                                                # Tareas a ejecutarse
@@ -19,3 +20,14 @@ jobs:                                                # Tareas a ejecutarse
         uses: SonarSource/sonarqube-scan-action@v5   # Warning: actualziar a v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # Token guardado en Secrets
+
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: sonarqube
+    steps:
+      - uses: actions/checkout@v4                    # descarga el código
+        with:
+          fetch-depth: 0
+      - name: Build
+        run: echo "Creando imagen"
