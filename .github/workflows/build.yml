@@ -1,0 +1,21 @@
+name: Build                                          #Nombre visible del workflow
+
+on:                                                  #Disparador / trigger
+  push:
+    branches:
+      - dev
+  workflow_dispatch: 
+
+jobs:                                                # Tareas a ejecutarse
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4                    # descarga el código
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          
+      - name: SonarQube Scan                     
+        uses: SonarSource/sonarqube-scan-action@v5   # Warning: actualziar a v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # Token guardado en Secrets
